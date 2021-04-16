@@ -3,6 +3,7 @@ from graia.broadcast import Broadcast, BaseEvent, BaseDispatcher, DispatcherInte
 from loguru import logger
 from graia.application.logger import LoggingLogger
 from fastapi import FastAPI
+from pydantic.networks import stricturl
 loop = asyncio.get_event_loop()
 lg = LoggingLogger()
 
@@ -58,6 +59,24 @@ for i in [0, 0, 0, 0, 0]:
 
 
 app = FastAPI()
+
+
+@app.get('/api/event/new')
+async def _1(event_name: str):
+    events = {'ExampleEvent': ExampleEvent,
+              'Hi': Hi
+            }
+    try:
+        broadcast.postEvent(events[event_name]())
+        return {event_name: 'Event Posted'}
+    except Exception as e:
+        return str(e)
+
+
+@app.get('/api/event/find')
+async def _2(event_name: str):
+    return {event_name: str(broadcast.findEvent(event_name))}
+'''
 @app.get('/api/event/Hi')
 async def _():
     broadcast.postEvent(Hi())
@@ -65,3 +84,4 @@ async def _():
 @app.get('/api/event/ExampleEvent')
 async def _():
     broadcast.postEvent(ExampleEvent())
+'''

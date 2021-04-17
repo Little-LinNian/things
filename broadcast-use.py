@@ -30,7 +30,7 @@ class ExampleDispatcher(BaseDispatcher):
 @broadcast.receiver("ExampleEvent", dispatchers=[
     ExampleDispatcher('brain_power')
 ])
-def test_func(brain_power: int):  # 注意: 我们同时提供了特定的参数名称和特殊的类型注解
+def test_func(brain_power: int):
     logger.info(f"brain_power={brain_power}")
 
 
